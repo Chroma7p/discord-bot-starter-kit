@@ -29,7 +29,6 @@ async def on_message_delete(message):
     await message.channel.send(txt)
 
 
-
 #コグのフォルダ
 cogfolder="cogs."
 #そして使用するコグの列挙(拡張子無しのファイル名)
