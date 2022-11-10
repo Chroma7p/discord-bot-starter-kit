@@ -21,12 +21,14 @@ async def on_ready():
     print("Hello!")  # コマンドラインにHello!と出力
 
 
+# メッセージ編集時に発動(編集前(before)と後(after)のメッセージを送信)
 @bot.event
 async def on_message_edit(before, after):
     txt = f"{before.author} editted message!\nbefore:{before.content}\nafter:{after.content}"
     await before.channel.send(txt)
 
 
+# メッセージ削除時に発動(削除されたメッセージを送信)
 @bot.event
 async def on_message_delete(message):
     txt = f"{message.author} deleted message!\n{message.content}"

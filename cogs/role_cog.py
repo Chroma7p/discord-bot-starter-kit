@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-# Rolecogクラス
+# Rolecogクラス(試作中　思った感じでは動かない)
 class RoleCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
