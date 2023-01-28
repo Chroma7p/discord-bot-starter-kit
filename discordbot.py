@@ -1,11 +1,18 @@
 # discord.pyの大事な部分をimport
 from discord.ext import commands
+import discord
 import os
+import asyncio
 
 # デプロイ先の環境変数にトークンをおいてね
-APITOKEN = os.environ["DISCORD_API_TOKEN"]
+APITOKEN = "OTg2OTEyMTQwNjkyNzE3NjA5.GMkkGZ.mC_82idnI7yiYiVNyGE3k6kSUIF7VHybkLBwqY"
 # botのオブジェクトを作成(コマンドのトリガーを!に)
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
+
+async def cog_setup(cogs):
+    for c in cogs:
+        await c.setup()
+
 
 # コマンドを設定
 @bot.command()
@@ -24,24 +31,37 @@ async def on_ready():
 # メッセージ編集時に発動(編集前(before)と後(after)のメッセージを送信)
 @bot.event
 async def on_message_edit(before, after):
-    txt = f"{before.author} editted message!\nbefore:{before.content}\nafter:{after.content}"
+    txt = f"{before.author} がメッセージを編集しました！\nbefore:```{before.content}```\nafter:```{after.content}```"
+    await after.add_reaction()
     await before.channel.send(txt)
 
 
 # メッセージ削除時に発動(削除されたメッセージを送信)
 @bot.event
 async def on_message_delete(message):
-    txt = f"{message.author} deleted message!\n{message.content}"
+    txt = f"{message.channel}:{message.author} がメッセージを削除しました！\n```{message.content}```"
+    await message.author.send(txt)
     await message.channel.send(txt)
 
+@bot.event
+async def on_typing(channel,user,when):
+    txt=f"{user} がメッセージを入力しています！"
+    await channel.send(txt)
 
-# コグのフォルダ
-cogfolder = "cogs."
-# そして使用するコグの列挙(拡張子無しのファイル名)
-cogs = ["sample_cog"]
 
-for c in cogs:
-    bot.load_extension(cogfolder + c)
+async def main():
+    # do other async things
+    # コグのフォルダ
+    cogfolder = "cogs."
+    # そして使用するコグの列挙(拡張子無しのファイル名)
+    cogs = ["sample_cog"]
 
-# 起動
-bot.run(APITOKEN)
+    for c in cogs:
+        await bot.load_extension(cogfolder + c)
+
+    # start the client
+    async with bot:
+        await bot.start(APITOKEN)
+
+asyncio.run(main())
+
