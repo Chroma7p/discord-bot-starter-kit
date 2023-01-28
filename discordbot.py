@@ -5,7 +5,7 @@ import os
 import asyncio
 
 # デプロイ先の環境変数にトークンをおいてね
-APITOKEN = "OTg2OTEyMTQwNjkyNzE3NjA5.GMkkGZ.mC_82idnI7yiYiVNyGE3k6kSUIF7VHybkLBwqY"
+APITOKEN = os.environ["DISCORD_BOT_TOKEN"]
 # botのオブジェクトを作成(コマンドのトリガーを!に)
 bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
 
