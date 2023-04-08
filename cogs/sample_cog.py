@@ -1,6 +1,8 @@
 from discord.ext import commands
 
 # samplecogクラス
+
+
 class SampleCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -14,8 +16,6 @@ class SampleCog(commands.Cog):
     @commands.command()
     async def chkcog(self, ctx):
         await ctx.send("using cog!")
-
-    
 
 
 # Cogとして使うのに必要なsetup関数

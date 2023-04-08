@@ -7,7 +7,8 @@ import asyncio
 # デプロイ先の環境変数にトークンをおいてね
 APITOKEN = os.environ["DISCORD_BOT_TOKEN"]
 # botのオブジェクトを作成(コマンドのトリガーを!に)
-bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
+bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+
 
 async def cog_setup(cogs):
     for c in cogs:
@@ -43,9 +44,10 @@ async def on_message_delete(message):
     await message.author.send(txt)
     await message.channel.send(txt)
 
+
 @bot.event
-async def on_typing(channel,user,when):
-    txt=f"{user} がメッセージを入力しています！"
+async def on_typing(channel, user, when):
+    txt = f"{user} がメッセージを入力しています！"
     await channel.send(txt)
 
 
@@ -64,4 +66,3 @@ async def main():
         await bot.start(APITOKEN)
 
 asyncio.run(main())
-
