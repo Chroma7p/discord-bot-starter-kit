@@ -3,22 +3,20 @@ from discord.ext import commands
 import discord
 import os
 import asyncio
+from dotenv import load_dotenv
+
+load_dotenv(".env")
 
 # デプロイ先の環境変数にトークンをおいてね
 APITOKEN = os.environ["DISCORD_BOT_TOKEN"]
 # botのオブジェクトを作成(コマンドのトリガーを!に)
-bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
-
-async def cog_setup(cogs):
-    for c in cogs:
-        await c.setup()
+bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 
 
-# コマンドを設定
-@bot.command()
-# "!hello"と送信された時
-async def hello(ctx):
-    await ctx.send("hello!")  # 送信された場所に"hello!"と送り返す
+@bot.tree.command(name="test", description="スラッシュコマンドが機能しているかのテスト用コマンド")
+async def test(interaction: discord.Interaction):
+    print("test")
+    await interaction.response.send_message("test")
 
 
 # イベントを検知
@@ -43,14 +41,14 @@ async def on_message_delete(message):
     await message.author.send(txt)
     await message.channel.send(txt)
 
+
 @bot.event
-async def on_typing(channel,user,when):
-    txt=f"{user} がメッセージを入力しています！"
+async def on_typing(channel, user, when):
+    txt = f"{user} がメッセージを入力しています！"
     await channel.send(txt)
 
 
 async def main():
-    # do other async things
     # コグのフォルダ
     cogfolder = "cogs."
     # そして使用するコグの列挙(拡張子無しのファイル名)
@@ -64,4 +62,3 @@ async def main():
         await bot.start(APITOKEN)
 
 asyncio.run(main())
-
